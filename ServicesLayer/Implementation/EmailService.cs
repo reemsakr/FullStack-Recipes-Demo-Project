@@ -9,51 +9,25 @@ using System.Net.Mail;
 using ServicesLayer.Interface;
 using Xamarin.Essentials;
 using DomainLayer.Models.User;
+using RepositoryLayer.IRepository;
 
 namespace ServicesLayer.Implementation
 {
     public class EmailService : IEmail
     {
-        private readonly EmailModel _config;
-
-        public EmailService(EmailModel configuration)
+        private IEmailRepo<EmailModel> EmailRepository;
+        public EmailService(IEmailRepo<EmailModel> EmailRepository)
         {
-            _config = configuration;
+            this.EmailRepository = EmailRepository;
+
         }
 
         public void SendEmail(Message message)
         {
-            var emailMessage = CreateEmailMessage(message);
-            Send(emailMessage);
+             EmailRepository.SendEmail(message);
         }
-        private MailMessage CreateEmailMessage(Message message)
-        {
-            MailMessage mailMessage = new MailMessage();
-            //mailMessage.Attachments.Add(attachment);
+        
 
-            mailMessage.To.Add(message.To); //receiver email
-            mailMessage.Subject = message.Subject;
-            mailMessage.Body = message.Content;
-            mailMessage.IsBodyHtml = true;
-            mailMessage.From = new MailAddress(_config.From);
-            return mailMessage;
-        }
-        private void Send(MailMessage mailMessage)
-        {
-            using SmtpClient smtpClient = new SmtpClient(_config.SmtpServer, _config.Port);
-            try
-            {
-                smtpClient.UseDefaultCredentials = false;
-                smtpClient.EnableSsl = false;
-                smtpClient.Credentials = new System.Net.NetworkCredential(_config.Username, _config.Password);
-                Console.WriteLine(mailMessage.From);
-                smtpClient.SendMailAsync(mailMessage);
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
-
-        }
+        
     }
 }

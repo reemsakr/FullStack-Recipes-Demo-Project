@@ -2,6 +2,7 @@
 using DomainLayer.ViewModel;
 using Microsoft.EntityFrameworkCore;
 using RepositoryLayer;
+using RepositoryLayer.IRepository;
 using ServiceLayer.Service.Contract;
 using System;
 using System.Collections.Generic;
@@ -15,164 +16,58 @@ namespace ServiceLayer.Service.Implementation
 {
     public class RecipeService : IRecipe
     {
-       
-        private readonly AppDbContext _dbContext;
 
-        public RecipeService(AppDbContext dbContext)
-        {
-            this._dbContext = dbContext;
-        }
+        
+       private IRecipeRepo<Recipe> RecipeRepository;
+       public RecipeService(IRecipeRepo<Recipe> RecipeRepository)
+       {
+           this.RecipeRepository = RecipeRepository;
 
+       }
+      
         //Get All Recipe
         public List<Recipe> GetAllRepo()
         {
-            
-                return this._dbContext.Recipes.ToList();
+            return RecipeRepository.GetAllRepo();
+              
 
         }
         //Get Single Recipe
         public Recipe GetSingleRepo(int id)
         {
 
-            return this._dbContext.Recipes.SingleOrDefault(s => s.Id == id); ;
+            return RecipeRepository.GetSingleRepo(id);
 
         }
         //Add Recipe in Recipe Table
         public String AddRecipeRepo(Recipe recipe)
         {
-            try
-            {
-                var Recipe = new Recipe()
-                {
-
-                    Name = recipe.Name,
-                };
-
-                var test = _dbContext.Recipes.FirstOrDefault(r => r.Name == Recipe.Name);
-                if (test == null)
-                {
-
-                    //Console.WriteLine(Recipe.Ingredients);
-                    _dbContext.Recipes.Add(Recipe);
-                    _dbContext.SaveChanges();
-
-                    return ("Success Add");
-                }
-
-                return "This recipe is already here";
-            }
-            catch (Exception ex)
-            {
-                return ex.Message;
-            }
+            return RecipeRepository.AddRecipeRepo(recipe);
         }
         //Remove Recipe
         public string RemoveRecipe(int id)
         {
-            try
-            {
-
-                var data = GetSingleRepo (id);
-                if (data != null)
-                {
-                    _dbContext.Recipes.Remove(data);
-                    _dbContext.SaveChanges();
-                    return ("Delete success");
-                }
-
-                return "Not Found Recipes.";
-            }
-            catch (Exception ex)
-            {
-                return ex.Message;
-            }
+            return RecipeRepository.RemoveRecipe(id);
         }
         //Update Recipe
         public String UpdateRecipeRepo(int id, Recipe recipe)
         {
-            try
-            {
-
-                Recipe data = _dbContext.Recipes.Find(id);
-
-                if (data != null)
-                {
-                    var test = _dbContext.Recipes.FirstOrDefault(r => r.Name == recipe.Name&&r.Id!=id);
-                    if (test != null)
-                    {
-                        return ("You have to enter a unique name for your recipe");
-                    }
-                    data.Name = recipe.Name;
-                    _dbContext.SaveChanges();
-                    return ("Success Update");
-                }
-                return ("Not Found Recipe.");
-            }
-            catch (Exception ex)
-            {
-                return ex.Message;
-            }
+            return RecipeRepository.UpdateRecipeRepo(id, recipe);
         }
 
         public RecipeWithIngredientsVM GetRecipeWithIngredients(int id)
         {
-            var Recipe = _dbContext.Recipes.Where(n => n.Id == id).Select(n => new RecipeWithIngredientsVM()
-            {
-                Name = n.Name,
-                IngredientName = n.IngredientRecipes.Select(n => n.Ingredient.Name).ToList()
-            }).FirstOrDefault();
-            return Recipe;
+            return RecipeRepository.GetRecipeWithIngredients(id);
         }
 
         public String GetRecipeByListOfIngredient(List<String> Ingredients)
         {
-            foreach (var Recipe in _dbContext.Recipes.ToList())
-            {
-
-                var testList = _dbContext.Recipes.Where(n => n.Id == Recipe.Id).Select(n => new RecipeWithIngredientsVM()
-                {
-                    Name = n.Name,
-                    IngredientName = n.IngredientRecipes.Select(n => n.Ingredient.Name).ToList()
-                }).FirstOrDefault();
-                if (testList.IngredientName.Count() != Ingredients.Count())
-                {
-                    return ("Please enter the correct Ingredients.");
-                }
-                testList.IngredientName.Sort();
-                Ingredients.Sort();
-                bool flag = true;
-                for (int i = 0; i < testList.IngredientName.Count(); i++)
-                {
-                    if (testList.IngredientName[i] != Ingredients[i])
-                    {
-                        flag = false;
-                        break;
-
-                    }
-                }
-                if (flag == true)
-                {
-                    return (Recipe.Name);
-                }
-
-            }
-
-            return ("No matching recipes found.");
+            return RecipeRepository.GetRecipeByListOfIngredient(Ingredients);
         }
 
         public Recipe SearchByName(String name)
         {
-            var Recipe = new Recipe()
-            {
-
-                Name = name,
-
-            };
-
-            var test = _dbContext.Recipes.FirstOrDefault(r => r.Name == Recipe.Name);
-            
-
-            return test;
+            return RecipeRepository.SearchByName(name);
         }
     }
     

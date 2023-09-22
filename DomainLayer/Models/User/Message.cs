@@ -10,6 +10,7 @@ namespace DomainLayer.Models.User
 {
     public class Message
     {
+        
         public string To { get; set; }
         public string Subject { get; set; }
 
@@ -23,5 +24,28 @@ namespace DomainLayer.Models.User
 
 
         }
+        /*
+        private string[] strings;
+        private string v;
+        private Task<string> confirmationLinke;
+
+        public List<MailboxAddress> To { get; set; }
+        public string Subject { get; set; }
+        public string Content { get; set; }
+        public Message(IEnumerable<string> to, string subject, string content)
+        {
+            To = new List<MailboxAddress>();
+            To.AddRange(to.Select(x => new MailboxAddress("email", x)));
+            Subject = subject;
+            Content = content;
+        }
+
+        public Message(string[] strings, string v, Task<string> confirmationLinke)
+        {
+            this.strings = strings;
+            this.v = v;
+            this.confirmationLinke = confirmationLinke;
+        }
+        /*/
     }
 }

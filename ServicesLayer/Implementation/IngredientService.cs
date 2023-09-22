@@ -1,5 +1,6 @@
 ﻿using DomainLayer.Models;
 using RepositoryLayer;
+using RepositoryLayer.IRepository;
 using ServiceLayer.Service.Contract;
 using System;
 using System.Collections.Generic;
@@ -11,99 +12,42 @@ namespace ServiceLayer.Service.Implementation
 {
     public class IngredientService : IIngredient
     {
-       
-        private readonly AppDbContext _dbContext;
 
-        public IngredientService(AppDbContext dbContext)
+        private IIngredientRepo<Ingredient> IngredientRepository;
+        public IngredientService(IIngredientRepo<Ingredient> IngredientRepository)
         {
-            this._dbContext = dbContext;
+            this.IngredientRepository = IngredientRepository;
+
         }
 
         //Get All Ingredient
         public List<Ingredient> GetAllRepo()
         {
 
-            return _dbContext.Ingredients.ToList();
+            return IngredientRepository.GetAllRepo();
 
         }
         //Get Single Ingredient
         public Ingredient GetSingleRepo(int id)
         {
 
-            return this._dbContext.Ingredients.SingleOrDefault(s => s.Id == id);
+            return IngredientRepository.GetSingleRepo(id);
 
         }
         //Add Ingredient in Ingredient Table
         public String AddIngredientRepo(Ingredient ingredient)
         {
-            try
-            {
-                var Ingredient = new Ingredient()
-                {
-
-                    Name = ingredient.Name,
-                };
-
-                var test = _dbContext.Ingredients.FirstOrDefault(r => r.Name == Ingredient.Name);
-                if (test == null)
-                {
-                    _dbContext.Ingredients.Add(Ingredient);
-                    _dbContext.SaveChanges();
-
-                    return ("Success Add");
-                }
-
-                return "This Ingredient is already here";
-            }
-            catch (Exception ex)
-            {
-                return ex.Message;
-            }
+            return IngredientRepository.AddIngredientRepo(ingredient);
         }
         //Remove Ingredient
         public string RemoveIngredient(int id)
         {
-            try
-            {
-                var data = GetSingleRepo(id);
-                if (data != null)
-                {
-                    _dbContext.Ingredients.Remove(data);
-                    _dbContext.SaveChanges();
-                    return ("Delete success");
-                }
-
-                return "Not Found Ingredient.";
-            }
-            catch (Exception ex)
-            {
-                return ex.Message;
-            }
+            return IngredientRepository.RemoveIngredient(id);
         }
         //Update Ingredient
         public String UpdateIngredientRepo(int id, Ingredient ingredient)
         {
-            try
-            {
-                var data = _dbContext.Ingredients.Find(id);
-
-                if (data != null)
-                {
-                    var test = _dbContext.Ingredients.FirstOrDefault(r => r.Name == ingredient.Name&& r .Id !=id);
-                    if (test != null)
-                    {
-                        return ("You have to enter a unique name for your ingredient");
-                    }
-                    data.Name = ingredient.Name;
-                    _dbContext.SaveChanges();
-                    return ("Success Update");
-                }
-                return ("Not Found Ingredient.");
-            }
-            catch (Exception ex)
-            {
-                return ex.Message;
-            }
+            return IngredientRepository.UpdateIngredientRepo(id,ingredient);
         }
 
     }
