@@ -48,8 +48,9 @@ namespace RepositoryLayer.Repository
             try
             {
                 var found = entities.Find(IR.Id);
-                var RId = entities.Find(IR.RecipesId);
-                var IId = entities.Find(IR.IngredientsId);
+                var RId = context.Recipes.Find(IR.RecipesId);
+                var IId = context.Ingredients.Find(IR.IngredientsId);
+                
                 if (found == null)
                 {
                     if (RId != null && IId != null)
@@ -69,6 +70,7 @@ namespace RepositoryLayer.Repository
                     }
                     else
                     {
+                        Console.WriteLine("hereeeeeeeeeeeeeeeee");
                         return ("Please enter the correct IDs");
                     }
 

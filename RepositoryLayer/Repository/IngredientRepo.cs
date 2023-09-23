@@ -1,6 +1,7 @@
 ﻿
 using DomainLayer.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using RepositoryLayer.IRepository;
 
 namespace RepositoryLayer.Repository
@@ -8,20 +9,30 @@ namespace RepositoryLayer.Repository
     public class IngredientRepo<T> : IIngredientRepo<T> where T : Ingredient
     {
         private readonly AppDbContext context;
+        private readonly IMemoryCache _cache;
         private  DbSet<T> entities;
         string errorMessage = string.Empty;
-
-        public IngredientRepo(AppDbContext context)
+        private readonly string cachekey = "IngredientCacheKey";
+        public IngredientRepo(AppDbContext context, IMemoryCache cache)
         {
+            this._cache = cache;
             this.context = context;
             entities = context.Set<T>();
         }
 
         //Get All Ingredient
-        public List<T> GetAllRepo()
+        public  List<T> GetAllRepo()
         {
+            if (_cache.TryGetValue(cachekey, out List<T> data))
+                return data;
+             data = entities.ToList();
+            var cacheOptions = new MemoryCacheEntryOptions()
+           .SetSize(1) // maximum cache size in number of entries
+           .SetSlidingExpiration(TimeSpan.FromMinutes(5)) // cache expiration time after last access
+           .SetAbsoluteExpiration(TimeSpan.FromMinutes(30)); // cache expiration time after creation
 
-            return entities.ToList();
+            _cache.Set(cachekey, data, cacheOptions);
+            return data;
 
         }
         //Get Single Ingredient

@@ -93,9 +93,9 @@ namespace FullStack_Demo_Project.Controllers
             if (response == "No matching recipes found.") return NotFound(response);
             return Ok(response);
         }
-        [HttpPost]
-        [Route("/SearchForRecipeByName")]
-        public async Task<IActionResult> SearchByName(String name)
+        [HttpGet]
+        [Route("/SearchForRecipeByName/{name}")]
+        public async Task<IActionResult> SearchByName([FromRoute] String name)
         {
             var response = this._recipe.SearchByName(name);
             if (response == null) return NotFound("No Recipes Found.");

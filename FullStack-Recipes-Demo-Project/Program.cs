@@ -56,7 +56,7 @@ builder.Services.AddAuthentication(x =>
 
 var emailConfig = builder.Configuration.GetSection("EmailSettings").Get<EmailModel>();
 builder.Services.AddSingleton(emailConfig);
-
+builder.Services.AddMemoryCache();
 
 var app = builder.Build();
 

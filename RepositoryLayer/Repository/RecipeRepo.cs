@@ -2,6 +2,7 @@
 using DomainLayer.Models;
 using DomainLayer.ViewModel;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using RepositoryLayer.IRepository;
 using System;
 using System.Collections.Generic;
@@ -14,19 +15,27 @@ namespace RepositoryLayer.Repository
     {
         private readonly AppDbContext context;
         private  DbSet<T> entities;
-        string errorMessage = string.Empty;
-
-        public RecipeRepo(AppDbContext context)
+        private readonly IMemoryCache _cache;
+        private readonly string cachekey = "RecipeCacheKey";
+        public RecipeRepo(AppDbContext context,IMemoryCache cache)
         {
             this.context = context;
+            this._cache = cache;
             entities = context.Set<T>();
         }
         //Get All Recipe
         public List<T> GetAllRepo()
         {
+            if (_cache.TryGetValue(cachekey, out List<T> data))
+                return data;
+            data = entities.ToList();
+            var cacheOptions = new MemoryCacheEntryOptions()
+           .SetSize(1) // maximum cache size in number of entries
+           .SetSlidingExpiration(TimeSpan.FromMinutes(5)) // cache expiration time after last access
+           .SetAbsoluteExpiration(TimeSpan.FromMinutes(30)); // cache expiration time after creation
 
-            return entities.ToList();
-            
+            _cache.Set(cachekey, data, cacheOptions);
+            return data;
         }
         //Get Single Recipe
         public T GetSingleRepo(int id)
@@ -73,6 +82,7 @@ namespace RepositoryLayer.Repository
                 var data = GetSingleRepo(id);
                 if (data != null)
                 {
+                    _cache.Remove(id);
                     entities.Remove(data);
                     context.SaveChanges();
                     return ("Delete success");
@@ -114,63 +124,97 @@ namespace RepositoryLayer.Repository
 
         public RecipeWithIngredientsVM GetRecipeWithIngredients(int id)
         {
-            var Recipe = entities.Where(n => n.Id == id).Select(n => new RecipeWithIngredientsVM()
-            {
-                Name = n.Name,
-                IngredientName = n.IngredientRecipes.Select(n => n.Ingredient.Name).ToList()
-            }).FirstOrDefault();
-            return Recipe;
+            return _cache.GetOrCreate($"id:{id}", cacheEntry =>
+             {
+                 var Recipe = entities.Where(n => n.Id == id).Select(n => new RecipeWithIngredientsVM()
+                 {
+                     Name = n.Name,
+                     IngredientName = n.IngredientRecipes.Select(n => n.Ingredient.Name).ToList()
+                 }).FirstOrDefault();
+                 var cacheOptions = new MemoryCacheEntryOptions()
+                .SetSize(1) // maximum cache size in number of entries
+                .SetSlidingExpiration(TimeSpan.FromMinutes(5)) // cache expiration time after last access
+                .SetAbsoluteExpiration(TimeSpan.FromMinutes(30)); // cache expiration time after creation
+
+                 _cache.Set(cachekey, Recipe, cacheOptions);
+
+                 return Recipe;
+
+             });
+                
         }
 
         public String GetRecipeByListOfIngredient(List<String> Ingredients)
         {
-            foreach (var Recipe in entities.ToList())
-            {
-
-                var testList = entities.Where(n => n.Id == Recipe.Id).Select(n => new RecipeWithIngredientsVM()
+           return _cache.GetOrCreate($"Ingredients:{Ingredients}", cacheEntry => {
+            var data = "";
+                foreach (var Recipe in entities.ToList())
                 {
-                    Name = n.Name,
-                    IngredientName = n.IngredientRecipes.Select(n => n.Ingredient.Name).ToList()
-                }).FirstOrDefault();
-                if (testList.IngredientName.Count() != Ingredients.Count())
-                {
-                    return ("Please enter the correct Ingredients.");
-                }
-                testList.IngredientName.Sort();
-                Ingredients.Sort();
-                bool flag = true;
-                for (int i = 0; i < testList.IngredientName.Count(); i++)
-                {
-                    if (testList.IngredientName[i] != Ingredients[i])
+                    var testList = entities.Where(n => n.Id == Recipe.Id).Select(n => new RecipeWithIngredientsVM()
                     {
-                        flag = false;
-                        break;
+                        Name = n.Name,
+                        IngredientName = n.IngredientRecipes.Select(n => n.Ingredient.Name).ToList()
+                    }).FirstOrDefault();
+                
+                    if (testList.IngredientName.Count() != Ingredients.Count())
+                    {
+                   
+                        data = "Please enter the correct Ingredients.";
+                    }
+                    else
+                    {
+                    testList.IngredientName.Sort();
+                    Ingredients.Sort();
+                    
+                    bool flag = true;
+                    for (int i = 0; i < testList.IngredientName.Count(); i++)
+                    {
+                        Console.WriteLine(testList.IngredientName[0]);
+                        if (testList.IngredientName[i] != Ingredients[i])
+                        {
+                            flag = false;
+                            break;
 
+                        }
+                    }
+
+                    if (flag == true)
+                    {
+                        
+                        return data= Recipe.Name;
                     }
                 }
-                if (flag == true)
-                {
-                    return (Recipe.Name);
+                    
+
+                   
                 }
-
-            }
-
-            return ("No matching recipes found.");
+                return data;
+            });
         }
-
+           
+        
         public T SearchByName(String name)
         {
-            var Recipe = new Recipe()
+            return _cache.GetOrCreate($"name:{name}", cacheEntry =>
             {
+                //if (_cache.TryGetValue(cachekey, out T data)) return data;
+                var Recipe = new Recipe()
+                {
 
-                Name = name,
+                    Name = name,
 
-            };
+                };
 
-            var test = entities.FirstOrDefault(r => r.Name == Recipe.Name);
+                var data = entities.FirstOrDefault(r => r.Name == Recipe.Name);
+                var cacheOptions = new MemoryCacheEntryOptions()
+               .SetSize(1) // maximum cache size in number of entries
+               .SetSlidingExpiration(TimeSpan.FromMinutes(5)) // cache expiration time after last access
+               .SetAbsoluteExpiration(TimeSpan.FromMinutes(30)); // cache expiration time after creation
 
+                _cache.Set(cachekey, data, cacheOptions);
+                return data;
 
-            return test;
+            });
         }
 
     }

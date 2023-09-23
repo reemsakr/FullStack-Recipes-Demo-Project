@@ -1,6 +1,7 @@
 ﻿using DomainLayer.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using ServiceLayer.Service.Contract;
 
 namespace FullStack_Demo_Project.Controllers
@@ -11,10 +12,11 @@ namespace FullStack_Demo_Project.Controllers
     {
 
         private readonly IIngredient _ingredient;
-
-        public IngredientController(IIngredient ingredient)
+        private readonly IMemoryCache _cache;
+        public IngredientController(IIngredient ingredient,IMemoryCache cache)
         {
             this._ingredient = ingredient;
+            this._cache = cache;
         }
 
         //Get All ingredient
