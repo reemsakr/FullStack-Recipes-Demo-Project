@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DomainLayer.Models.User;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -9,16 +10,16 @@ using System.Threading.Tasks;
 
 namespace DomainLayer.Models
 {
-    public class Recipe
+    public class Recipe:BaseEntity
     {
         [Key]
-        public int ?Id { get; set; }
-
+        public  int  ?Id { get; set; }
         public required string Name { get; set; }
 
         [JsonIgnore]
         [IgnoreDataMember]
         public  List<IngredientRecipe>? IngredientRecipes { get; set; }
 
+      
     }
 }

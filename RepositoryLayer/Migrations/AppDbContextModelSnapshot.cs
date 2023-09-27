@@ -30,6 +30,9 @@ namespace RepositoryLayer.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"));
 
+                    b.Property<DateTime?>("AddedDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -46,6 +49,9 @@ namespace RepositoryLayer.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"));
+
+                    b.Property<DateTime?>("AddedDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<int?>("IngredientsId")
                         .HasColumnType("int");
@@ -71,6 +77,9 @@ namespace RepositoryLayer.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"));
+
+                    b.Property<DateTime?>("AddedDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -110,21 +119,21 @@ namespace RepositoryLayer.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "6b0a9ece-c298-44ff-bf4f-31f8f5620927",
+                            Id = "3261cbc3-761a-4715-85d1-6dd7ea961032",
                             ConcurrencyStamp = "1",
                             Name = "Admin",
                             NormalizedName = "Admin"
                         },
                         new
                         {
-                            Id = "eb8fafb2-7c25-4f93-a05f-7ff57b5ec107",
+                            Id = "4afee511-6956-40f6-b389-853079483c0f",
                             ConcurrencyStamp = "2",
                             Name = "User",
                             NormalizedName = "User"
                         },
                         new
                         {
-                            Id = "6cb49e7f-8f92-4cf3-a08f-74066a4556be",
+                            Id = "f3038550-b3d1-4bdf-ba91-fdceee05887f",
                             ConcurrencyStamp = "3",
                             Name = "HR",
                             NormalizedName = "Hr"

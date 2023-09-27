@@ -10,14 +10,14 @@ namespace ServiceLayer.Service.Contract
     public interface IIngredientRecipe
     {
         //GetAll Record
-        List<IngredientRecipe> GetAllRepo();
-        //GetSingle Record
-        IngredientRecipe GetSingleRepo(int id);
+        List<IngredientRecipe> GetAll();
+        //Get single 
+        IngredientRecipe GetSingle(int id);
         //Add Record
-        String AddIngredientRecipeRepo(IngredientRecipe IngredientRecipe);
+        String Add(IngredientRecipe IngredientRecipe);
         //Update or Edit Record
-        String UpdateIngredientRecipeRepo(int id, IngredientRecipe IngredientRecipe);
+        String Update(int id, IngredientRecipe IngredientRecipe);
         //Delete or Remove
-        String RemoveIngredientRecipe(int id);
+        String Remove(int id);
     }
 }

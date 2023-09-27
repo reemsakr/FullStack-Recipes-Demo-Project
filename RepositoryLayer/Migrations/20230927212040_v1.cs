@@ -58,7 +58,8 @@ namespace RepositoryLayer.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AddedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -71,7 +72,8 @@ namespace RepositoryLayer.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AddedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -191,7 +193,8 @@ namespace RepositoryLayer.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     IngredientsId = table.Column<int>(type: "int", nullable: true),
-                    RecipesId = table.Column<int>(type: "int", nullable: true)
+                    RecipesId = table.Column<int>(type: "int", nullable: true),
+                    AddedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -213,9 +216,9 @@ namespace RepositoryLayer.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "2e1e4469-67cd-441a-b01c-5e87a56c7865", "3", "HR", "Hr" },
-                    { "5881ba9b-8b85-47f0-ab58-b695306fdac8", "1", "Admin", "Admin" },
-                    { "8773d8d1-faf9-4402-8ed0-93dc0f5949cd", "2", "User", "User" }
+                    { "3261cbc3-761a-4715-85d1-6dd7ea961032", "1", "Admin", "Admin" },
+                    { "4afee511-6956-40f6-b389-853079483c0f", "2", "User", "User" },
+                    { "f3038550-b3d1-4bdf-ba91-fdceee05887f", "3", "HR", "Hr" }
                 });
 
             migrationBuilder.CreateIndex(

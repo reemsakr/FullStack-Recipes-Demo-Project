@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace DomainLayer.Models.User
 {
-    public class User
+    public class User :BaseEntity
     {
-        public string ?Id { get; set; }
-
+        [Key]
+        public int ?Id { get; set; }
         public string ?UserName { get; set; }
         [EmailAddress]
         public  string? Email { get; set; }

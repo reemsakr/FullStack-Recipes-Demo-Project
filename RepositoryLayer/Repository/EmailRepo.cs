@@ -1,4 +1,4 @@
-
+﻿
 using DomainLayer.Models;
 using DomainLayer.Models.User;
 using Microsoft.EntityFrameworkCore;
@@ -11,14 +11,14 @@ using System.Text;
 using System.Threading.Tasks;
 namespace RepositoryLayer.Repository
 {
-    public class EmailRepo<T> : IEmailRepo<T> where T: EmailModel
+    public class EmailRepo<T> : IEmailRepo<T> where T : EmailModel
     {
         private readonly EmailModel _config;
-        
+
         public EmailRepo(EmailModel configuration)
         {
             _config = configuration;
-            
+
         }
 
         public void SendEmail(Message message)

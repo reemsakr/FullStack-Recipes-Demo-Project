@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 
 namespace RepositoryLayer.Repository
 {
-    public class UserRepo<T> : IUserRepo<T> where T:User
+    public class UserRepo<T> : IUserRepo<T> where T : User
     {
 
         private readonly UserManager<IdentityUser> _userManager;
@@ -209,8 +209,8 @@ namespace RepositoryLayer.Repository
                 var data = await _userManager.FindByIdAsync(id);
                 if (data != null)
                 {
-                    
-                   await  _userManager.DeleteAsync(data);
+
+                    await _userManager.DeleteAsync(data);
                     context.SaveChanges();
                     return ("Delete success");
                 }

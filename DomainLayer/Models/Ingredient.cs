@@ -10,10 +10,11 @@ using System.Threading.Tasks;
 
 namespace DomainLayer.Models
 {
-    public class Ingredient
+    public class Ingredient:BaseEntity
     {
         [Key]
-        public int ?Id { get; set; }
+        public int? Id { get; set; }
+
         [NotNull]
         public required string Name { get; set; }
 

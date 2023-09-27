@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DomainLayer.Models.User
 {
-    public class UsersViewModel
+    public class UsersViewModel:BaseEntity
     {
         public string Id { get; set; }
         public string Username { get; set; }

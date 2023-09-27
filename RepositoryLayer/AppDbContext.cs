@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace RepositoryLayer
 {
-    public class AppDbContext:IdentityDbContext<IdentityUser>
+    public class AppDbContext : IdentityDbContext<IdentityUser>
     {
 
         public AppDbContext(DbContextOptions<AppDbContext> con) : base(con) { }
@@ -49,7 +49,7 @@ namespace RepositoryLayer
                 new IdentityRole() { Name = "HR", ConcurrencyStamp = "3", NormalizedName = "Hr" }
                 );
         }
-        
+
     }
 
 }

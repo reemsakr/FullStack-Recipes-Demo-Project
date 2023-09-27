@@ -23,7 +23,7 @@ namespace FullStack_Demo_Project.Controllers
         [Route("getAll")]
         public async Task<IActionResult> GetAllRecords()
         {
-            var response =  this._recipe.GetAllRepo();
+            var response =  this._recipe.GetAll();
             if (response.Count() == 0) return NotFound("No Recipes Found");
             return Ok(response);
         }
@@ -35,7 +35,7 @@ namespace FullStack_Demo_Project.Controllers
         [Route("get/{id}")]
         public async Task<IActionResult> GetSingleRecords([FromRoute] int id)
         {
-            var response = this._recipe.GetSingleRepo(id);
+            var response = this._recipe.GetSingle(id);
             if(response!=null)return Ok(response);
             return NotFound("No Recipes Found");
 
@@ -45,7 +45,7 @@ namespace FullStack_Demo_Project.Controllers
         [Route("add")]
         public async Task<IActionResult> AddRecords(Recipe recipeRequest)
         {
-            var response =this._recipe.AddRecipeRepo(recipeRequest);
+            var response =this._recipe.Add(recipeRequest);
             if (response == "This recipe is already here")
             {
                 return BadRequest(response);
@@ -59,7 +59,7 @@ namespace FullStack_Demo_Project.Controllers
         [Route("{id}")]
         public async Task<IActionResult> RemoveRecords([FromRoute] int id)
         {
-            var response=this._recipe.RemoveRecipe(id);
+            var response=this._recipe.Remove(id);
             if (response == "Not Found Recipe.") return NotFound(response);
             return Ok(response);
         }
@@ -68,7 +68,7 @@ namespace FullStack_Demo_Project.Controllers
         [Route("{id}")]
         public async Task<IActionResult> UpdateRecords([FromRoute] int id,Recipe recipeRequest)
         {
-            var response = this._recipe.UpdateRecipeRepo(id,recipeRequest);
+            var response = this._recipe.Update(id,recipeRequest);
             if (response == "You have to enter a unique name for your recipe")
                 return BadRequest(response);
             if (response == "Not Found Recipe.") return NotFound(response);

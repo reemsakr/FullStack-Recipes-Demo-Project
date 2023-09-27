@@ -24,7 +24,7 @@ namespace FullStack_Demo_Project.Controllers
         [Route("getAll")]
         public async Task<IActionResult> GetAllRecords()
         {
-            var response = this._ingredient.GetAllRepo();
+            var response = this._ingredient.GetAll();
             if (response.Count() == 0) return NotFound("No ingredient Found");
             return Ok(response);
         }
@@ -36,7 +36,7 @@ namespace FullStack_Demo_Project.Controllers
         [Route("get/{id}")]
         public async Task<IActionResult> GetSingleRecords([FromRoute] int id)
         {
-            var response = this._ingredient.GetSingleRepo(id);
+            var response = this._ingredient.GetSingle(id);
             if (response != null) return Ok(response);
             return NotFound("No ingredient Found");
 
@@ -46,7 +46,7 @@ namespace FullStack_Demo_Project.Controllers
         [Route("add")]
         public async Task<IActionResult> AddRecords(Ingredient IngredientRequest)
         {
-            var response = this._ingredient.AddIngredientRepo(IngredientRequest);
+            var response = this._ingredient.Add(IngredientRequest);
             if (response == "This ingredient is already here")
             {
                 return BadRequest(response);
@@ -60,7 +60,7 @@ namespace FullStack_Demo_Project.Controllers
         [Route("{id}")]
         public async Task<IActionResult> RemoveRecords([FromRoute] int id)
         {
-            var response = this._ingredient.RemoveIngredient(id);
+            var response = this._ingredient.Remove(id);
             if (response == "Not Found ingredient.") return NotFound(response);
             return Ok(response);
         }
@@ -69,7 +69,7 @@ namespace FullStack_Demo_Project.Controllers
         [Route("{id}")]
         public async Task<IActionResult> UpdateRecords([FromRoute] int id, Ingredient IngredientRequest)
         {
-            var response = this._ingredient.UpdateIngredientRepo(id, IngredientRequest);
+            var response = this._ingredient.Update(id, IngredientRequest);
             if (response == "You have to enter a unique name for your ingredient.")
                 return BadRequest(response);
             if (response == "Not Found ingredient.") return NotFound(response);

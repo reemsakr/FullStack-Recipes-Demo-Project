@@ -21,7 +21,7 @@ namespace FullStack_Demo_Project.Controllers
         [Route("getAll")]
         public async Task<IActionResult> GetAllRecords()
         {
-            var response = this._ingredientRecipe.GetAllRepo();
+            var response = this._ingredientRecipe.GetAll();
             if (response.Count() == 0) return NotFound("No ingredientRecipe Found");
             return Ok(response);
         }
@@ -33,7 +33,7 @@ namespace FullStack_Demo_Project.Controllers
         [Route("get/{id}")]
         public async Task<IActionResult> GetSingleRecords([FromRoute] int id)
         {
-            var response = this._ingredientRecipe.GetSingleRepo(id);
+            var response = this._ingredientRecipe.GetSingle(id);
             if (response != null) return Ok(response);
             return NotFound("No ingredientRecipe Found");
 
@@ -43,7 +43,7 @@ namespace FullStack_Demo_Project.Controllers
         [Route("add")]
         public async Task<IActionResult> AddRecords(IngredientRecipe ingredientRecipeRequest)
         {
-            var response = this._ingredientRecipe.AddIngredientRecipeRepo(ingredientRecipeRequest);
+            var response = this._ingredientRecipe.Add(ingredientRecipeRequest);
             if (response == "This IngredientRecipe is already here")
             {
                 return BadRequest(response);
@@ -59,7 +59,7 @@ namespace FullStack_Demo_Project.Controllers
         [Route("{id}")]
         public async Task<IActionResult> RemoveRecords([FromRoute] int id)
         {
-            var response = this._ingredientRecipe.RemoveIngredientRecipe(id);
+            var response = this._ingredientRecipe.Remove(id);
             if (response == "Not Found ingredient.") return NotFound(response);
             return Ok(response);
         }
@@ -68,7 +68,7 @@ namespace FullStack_Demo_Project.Controllers
         [Route("{id}")]
         public async Task<IActionResult> UpdateRecords([FromRoute] int id, IngredientRecipe IngredientRecipeRequest)
         {
-            var response = this._ingredientRecipe.UpdateIngredientRecipeRepo(id, IngredientRecipeRequest);
+            var response = this._ingredientRecipe.Update(id, IngredientRecipeRequest);
             if (response == "Please enter the correct IDs")
                 return BadRequest(response);
             if (response == "Not Found IngredientRecipeRequest.") return NotFound(response);

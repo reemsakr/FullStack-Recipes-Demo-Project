@@ -11,15 +11,15 @@ namespace ServiceLayer.Service.Contract
     public interface IRecipe
     {
         //GetAll Record
-        List<Recipe> GetAllRepo();
-        //GetSingle Record
-        Recipe GetSingleRepo(int id);
+        List<Recipe> GetAll();
+        //Get single 
+        Recipe GetSingle(int id);
         //Add Record
-        String AddRecipeRepo(Recipe recipe);
+        String Add(Recipe recipe);
         //Update or Edit Record
-        String UpdateRecipeRepo(int id, Recipe recipe);
+        String Update(int id, Recipe recipe);
         //Delete or Remove
-        String RemoveRecipe(int id);
+        String Remove(int id);
 
         RecipeWithIngredientsVM GetRecipeWithIngredients(int id);
 

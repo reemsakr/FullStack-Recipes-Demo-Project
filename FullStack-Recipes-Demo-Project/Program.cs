@@ -21,9 +21,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<AppDbContext>(con => con.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-builder.Services.AddScoped(typeof(IRecipeRepo<>),typeof( RecipeRepo<>));
-builder.Services.AddScoped(typeof(IIngredientRepo<>), typeof(IngredientRepo<>));
-builder.Services.AddScoped(typeof(IIngredientRecipeRepo<>), typeof(IngredientRecipeRepo<>));
+
+builder.Services.AddScoped(typeof(IRepo<>), typeof(Repo<>));
 builder.Services.AddScoped(typeof(IUserRepo<>), typeof(UserRepo<>));
 builder.Services.AddScoped(typeof(IEmailRepo<>), typeof(EmailRepo<>));
 builder.Services.AddScoped<IUser, UserService>();

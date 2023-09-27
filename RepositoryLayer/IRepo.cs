@@ -2,23 +2,24 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ServiceLayer.Service.Contract
+namespace RepositoryLayer
 {
-    public interface IIngredient
+    
+    public interface IRepo<T> where T :BaseEntity
     {
-
         //GetAll Record
-        List<Ingredient> GetAll();
-        //Get single 
-        Ingredient GetSingle(int id);
+        List<T> GetAll(Expression<Func<T, bool>> filter = null);
+        
         //Add Record
-        String Add(Ingredient ingredient);
+        String Add(T recipe);
         //Update or Edit Record
-        String Update(int id, Ingredient ingredient);
+        String Update(int id, T recipe);
         //Delete or Remove
         String Remove(int id);
     }
+    
 }

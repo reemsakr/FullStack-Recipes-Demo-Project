@@ -25,7 +25,6 @@ namespace FullStack_Recipes_Demo_Project.Controllers
         }
         
         //Get All users
-        
         [HttpGet]
         [Route("getAll")]
         public IActionResult GetAllRecords()
@@ -51,8 +50,8 @@ namespace FullStack_Recipes_Demo_Project.Controllers
        
         //Add user 
         [HttpPost]
-        [Route("add")]
-        public async Task<IActionResult> AddRecords([FromBody] User UserRequest,string role)
+        [Route("add/{role}")]
+        public async Task<IActionResult> AddRecords([FromBody] User UserRequest,[FromRoute] string role)
         {
             
             var response =await  _user.AddRepo(UserRequest,role);
@@ -110,9 +109,9 @@ namespace FullStack_Recipes_Demo_Project.Controllers
             if (user != null)
             {
                 var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-                var link = this.Url.Action("ResetPassword", "Authentication", new { token, email = user.Email }, Request.Scheme);
-                var message = new Message(email, "Forgot Password link", link!);
-               
+                // var link = this.Url.Action("ResetPassword", "Authentication", new { token, email = user.Email }, Request.Scheme);
+                var message = new Message(email, "Forgot Password link", "reem");
+                Console.WriteLine(message.Content);
                 _email.SendEmail(message);
                 return Ok("Success sent!");
             }
