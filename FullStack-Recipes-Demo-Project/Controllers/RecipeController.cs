@@ -101,5 +101,15 @@ namespace FullStack_Demo_Project.Controllers
             if (response == null) return NotFound("No Recipes Found.");
             return Ok(response);
         }
+
+
+        [HttpGet]
+        [Route("/SearchForRecipeByCategory/{category}")]
+        public async Task<IActionResult> GetRecipesByCategory([FromRoute] String category)
+        {
+            var response = this._recipe.GetRecipesByCategory(category);
+            if (response == null) return NotFound("No Recipes Found.");
+            return Ok(response);
+        }
     }
 }

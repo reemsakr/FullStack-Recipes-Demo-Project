@@ -26,5 +26,7 @@ namespace ServiceLayer.Service.Contract
         String GetRecipeByListOfIngredient(List<String> Ingredients);
 
         Recipe SearchByName(String name);
+
+        List<Recipe> GetRecipesByCategory(string category); 
     }
 }

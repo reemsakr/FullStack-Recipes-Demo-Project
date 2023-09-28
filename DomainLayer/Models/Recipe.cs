@@ -16,6 +16,8 @@ namespace DomainLayer.Models
         public  int  ?Id { get; set; }
         public required string Name { get; set; }
 
+        public required  string Category { get; set; }
+
         [JsonIgnore]
         [IgnoreDataMember]
         public  List<IngredientRecipe>? IngredientRecipes { get; set; }

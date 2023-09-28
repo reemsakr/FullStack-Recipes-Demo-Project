@@ -56,6 +56,7 @@ namespace ServiceLayer.Service.Implementation
                 {
 
                     Name = recipe.Name,
+                    Category=recipe.Category
                 };
 
                 var test = RecipeRepository.GetAll(f => f.Name.Contains(Recipe.Name)).FirstOrDefault();
@@ -111,6 +112,7 @@ namespace ServiceLayer.Service.Implementation
                         return ("You have to enter a unique name for your recipe");
                     }
                     data.Name = recipe.Name;
+                    data.Category = recipe.Category;
                     return RecipeRepository.Update(id, data);
                 }
                 return ("Not Found Recipe.");
@@ -157,6 +159,10 @@ namespace ServiceLayer.Service.Implementation
          return   RecipeRepository.GetAll(f => f.Name.Contains(name)).FirstOrDefault();
             
         }
+        public List<Recipe> GetRecipesByCategory(string category)
+        {
+            return RecipeRepository.GetAll(f => f.Category.Contains(category));
+        } 
     }
     
 }
