@@ -20,6 +20,7 @@ namespace RepositoryLayer
 
         public DbSet<IngredientRecipe> IngredientsRecipes { get; set; }
 
+        public DbSet<FeedBack> FeedBacks { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -39,6 +40,15 @@ namespace RepositoryLayer
 
             builder.Entity<IngredientRecipe>()
                .HasIndex(p => new { p.IngredientsId, p.RecipesId }).IsUnique();
+
+            
+            builder.Entity<FeedBack>()
+                .HasOne(r => r.Recipe)
+                .WithMany(In => In.FeedBacks)
+                .HasForeignKey(ri => ri.RecipeId);
+            
+
+            
         }
         private static void SeedRoles(ModelBuilder builder)
         {

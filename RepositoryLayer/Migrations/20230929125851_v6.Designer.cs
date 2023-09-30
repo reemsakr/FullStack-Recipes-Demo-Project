@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RepositoryLayer;
 
@@ -11,9 +12,11 @@ using RepositoryLayer;
 namespace RepositoryLayer.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230929125851_v6")]
+    partial class v6
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -151,21 +154,21 @@ namespace RepositoryLayer.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "1364cef1-dcf9-4e62-9ecf-9ccb5e327ae1",
+                            Id = "5079388c-6871-46ea-b4b0-da94955364f9",
                             ConcurrencyStamp = "1",
                             Name = "Admin",
                             NormalizedName = "Admin"
                         },
                         new
                         {
-                            Id = "03bbf16b-2ccb-4cbb-a0e2-d0593450a5d7",
+                            Id = "2c39c51b-24d5-4ed0-aa2b-c7cbeffc65d2",
                             ConcurrencyStamp = "2",
                             Name = "User",
                             NormalizedName = "User"
                         },
                         new
                         {
-                            Id = "b59787d9-436e-4b0d-89f2-27a988901762",
+                            Id = "a141f0a3-e94e-4298-8633-7dcf556074fb",
                             ConcurrencyStamp = "3",
                             Name = "HR",
                             NormalizedName = "Hr"

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RepositoryLayer;
 
@@ -11,9 +12,11 @@ using RepositoryLayer;
 namespace RepositoryLayer.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230929123706_v4")]
+    partial class v4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -29,9 +32,6 @@ namespace RepositoryLayer.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime?>("AddedDate")
-                        .HasColumnType("datetime2");
 
                     b.Property<int>("Rate")
                         .HasColumnType("int");
@@ -151,21 +151,21 @@ namespace RepositoryLayer.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "1364cef1-dcf9-4e62-9ecf-9ccb5e327ae1",
+                            Id = "8f657ceb-3408-4926-86e1-5c2cc1d7ec14",
                             ConcurrencyStamp = "1",
                             Name = "Admin",
                             NormalizedName = "Admin"
                         },
                         new
                         {
-                            Id = "03bbf16b-2ccb-4cbb-a0e2-d0593450a5d7",
+                            Id = "c8322682-36ed-44a8-b955-a0e40a4dbf43",
                             ConcurrencyStamp = "2",
                             Name = "User",
                             NormalizedName = "User"
                         },
                         new
                         {
-                            Id = "b59787d9-436e-4b0d-89f2-27a988901762",
+                            Id = "04396a1d-2102-4319-9e99-37456c75c9f0",
                             ConcurrencyStamp = "3",
                             Name = "HR",
                             NormalizedName = "Hr"
@@ -346,7 +346,7 @@ namespace RepositoryLayer.Migrations
             modelBuilder.Entity("DomainLayer.Models.FeedBack", b =>
                 {
                     b.HasOne("DomainLayer.Models.Recipe", "Recipe")
-                        .WithMany("FeedBacks")
+                        .WithMany()
                         .HasForeignKey("RecipeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -427,8 +427,6 @@ namespace RepositoryLayer.Migrations
 
             modelBuilder.Entity("DomainLayer.Models.Recipe", b =>
                 {
-                    b.Navigation("FeedBacks");
-
                     b.Navigation("IngredientRecipes");
                 });
 #pragma warning restore 612, 618

@@ -21,7 +21,10 @@ namespace DomainLayer.Models
         [JsonIgnore]
         [IgnoreDataMember]
         public  List<IngredientRecipe>? IngredientRecipes { get; set; }
+        [JsonIgnore]
+        [IgnoreDataMember]
+        public List<FeedBack>? FeedBacks { get; set; }
 
-      
+
     }
 }

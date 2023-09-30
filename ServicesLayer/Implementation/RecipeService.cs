@@ -162,7 +162,30 @@ namespace ServiceLayer.Service.Implementation
         public List<Recipe> GetRecipesByCategory(string category)
         {
             return RecipeRepository.GetAll(f => f.Category.Contains(category));
-        } 
+        }
+
+        public RecipeWithFeedBacksVM GetRecipeWithFeedBacks(int id)
+        {
+            
+            return _cache.GetOrCreate($"id:{id}", cacheEntry =>
+            {
+                var Recipe = entities.Where(n => n.Id == id).Select(n => new RecipeWithFeedBacksVM()
+                {
+                    Name = n.Name,
+                    Rates = n.FeedBacks.Select(n => n.Rate).ToList(),
+                    Reviews = n.FeedBacks.Select(n=>n.Review).ToList()
+                }).FirstOrDefault();
+                var cacheOptions = new MemoryCacheEntryOptions()
+               .SetSize(1) // maximum cache size in number of entries
+               .SetSlidingExpiration(TimeSpan.FromMinutes(5)) // cache expiration time after last access
+               .SetAbsoluteExpiration(TimeSpan.FromMinutes(30)); // cache expiration time after creation
+
+                _cache.Set(cachekey, Recipe, cacheOptions);
+
+                return Recipe;
+
+            });
+        }
     }
     
 }

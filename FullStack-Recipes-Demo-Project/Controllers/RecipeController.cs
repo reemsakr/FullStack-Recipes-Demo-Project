@@ -84,6 +84,17 @@ namespace FullStack_Demo_Project.Controllers
             if (response == null) return NotFound("No Recipes Found.");
             return Ok(response);
         }
+
+        [HttpGet]
+        [Route("GetRecipeWithFeedBacksById/{id}")]
+        public async Task<IActionResult> GetRecipeWithFeedBacks([FromRoute] int id)
+        {
+
+            var response = this._recipe.GetRecipeWithFeedBacks(id);
+            if (response == null) return NotFound("No Recipes Found.");
+            return Ok(response);
+        }
+
         [HttpPost]
         [Route("GetRecipeByListOfIngredient")]
         public async Task<IActionResult> GetRecipeByListOfIngredient(List<String>Ingredients)

@@ -23,6 +23,8 @@ namespace ServiceLayer.Service.Contract
 
         RecipeWithIngredientsVM GetRecipeWithIngredients(int id);
 
+        RecipeWithFeedBacksVM GetRecipeWithFeedBacks(int id);
+
         String GetRecipeByListOfIngredient(List<String> Ingredients);
 
         Recipe SearchByName(String name);

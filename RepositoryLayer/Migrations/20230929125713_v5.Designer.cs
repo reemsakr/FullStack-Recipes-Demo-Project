@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RepositoryLayer;
 
@@ -11,9 +12,11 @@ using RepositoryLayer;
 namespace RepositoryLayer.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230929125713_v5")]
+    partial class v5
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -151,21 +154,21 @@ namespace RepositoryLayer.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "1364cef1-dcf9-4e62-9ecf-9ccb5e327ae1",
+                            Id = "60d73cbd-fa82-4a50-8a01-0ccdcabebddd",
                             ConcurrencyStamp = "1",
                             Name = "Admin",
                             NormalizedName = "Admin"
                         },
                         new
                         {
-                            Id = "03bbf16b-2ccb-4cbb-a0e2-d0593450a5d7",
+                            Id = "b37bbd70-2120-4871-ba5b-b3660a65b895",
                             ConcurrencyStamp = "2",
                             Name = "User",
                             NormalizedName = "User"
                         },
                         new
                         {
-                            Id = "b59787d9-436e-4b0d-89f2-27a988901762",
+                            Id = "e44bded0-3ba6-40e7-841a-2c06f0a97374",
                             ConcurrencyStamp = "3",
                             Name = "HR",
                             NormalizedName = "Hr"
@@ -346,7 +349,7 @@ namespace RepositoryLayer.Migrations
             modelBuilder.Entity("DomainLayer.Models.FeedBack", b =>
                 {
                     b.HasOne("DomainLayer.Models.Recipe", "Recipe")
-                        .WithMany("FeedBacks")
+                        .WithMany()
                         .HasForeignKey("RecipeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -427,8 +430,6 @@ namespace RepositoryLayer.Migrations
 
             modelBuilder.Entity("DomainLayer.Models.Recipe", b =>
                 {
-                    b.Navigation("FeedBacks");
-
                     b.Navigation("IngredientRecipes");
                 });
 #pragma warning restore 612, 618

@@ -30,6 +30,7 @@ builder.Services.AddScoped<IEmail, EmailService>();
 builder.Services.AddScoped<IRecipe, RecipeService>();
 builder.Services.AddScoped<IIngredient, IngredientService>();
 builder.Services.AddScoped<IIngredientRecipe, IngredientRecipeService>();
+builder.Services.AddScoped<IFeedBack, FeedBackService>();
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()
     .AddEntityFrameworkStores<AppDbContext>()
     .AddDefaultTokenProviders();
