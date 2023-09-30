@@ -42,15 +42,24 @@ namespace RepositoryLayer.Repository
         private bool CheckUserNameExistAsync(string? userName)
             => context.Users.Any(x => x.UserName == userName);
 
-        private static string CheckPasswordStrength(string pass)
+        private  async Task<string> CheckPasswordStrengthAsync(string pass)
         {
             StringBuilder sb = new StringBuilder();
-            if (pass.Length < 9)
-                sb.Append("Minimum password length should be 8" + Environment.NewLine);
-            if (!(Regex.IsMatch(pass, "[a-z]") && Regex.IsMatch(pass, "[A-Z]") && Regex.IsMatch(pass, "[0-9]")))
-                sb.Append("Password should be AlphaNumeric" + Environment.NewLine);
-            if (!Regex.IsMatch(pass, "[<,>,@,!,#,$,%,^,&,*,(,),_,+,\\[,\\],{,},?,:,;,|,',\\,.,/,~,`,-,=]"))
-                sb.Append("Password should contain special charcter" + Environment.NewLine);
+
+            var validators = _userManager.PasswordValidators;
+
+            foreach (var validator in validators)
+            {
+                var result = await validator.ValidateAsync(_userManager, null, pass);
+
+                if (!result.Succeeded)
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        sb.Append(error.Description);
+                    }
+                }
+            }
             return sb.ToString();
         }
 
@@ -89,11 +98,11 @@ namespace RepositoryLayer.Repository
 
                 if (CheckUserNameExistAsync(userObj.UserName))
                     return ("This UserName is registered before.Please try with another UserName");
-
-
-                var passMessage = CheckPasswordStrength(userObj.Password);
-                if (!string.IsNullOrEmpty(passMessage))
-                    return (passMessage.ToString());
+                
+               
+                var r = await CheckPasswordStrengthAsync(userObj.Password);
+                if (!string.IsNullOrEmpty(r))
+                    return (r.ToString());
 
                 IdentityUser user = new()
                 {
@@ -195,7 +204,7 @@ namespace RepositoryLayer.Repository
             if(user!=null)
             {
                 var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-                var link = this.Url.Action("ResetPassword", "Authentication", new { token, email = user.Email }, Request.Schema);
+               // var link = this.Url.Action("ResetPassword", "Authentication", new { token, email = user.Email }, Request.Schema);
             }
             return "";
         }

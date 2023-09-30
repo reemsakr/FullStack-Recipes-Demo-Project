@@ -46,7 +46,7 @@ namespace RepositoryLayer.Repository
                 smtpClient.UseDefaultCredentials = false;
                 smtpClient.EnableSsl = false;
                 smtpClient.Credentials = new System.Net.NetworkCredential(_config.Username, _config.Password);
-                Console.WriteLine(mailMessage.To);
+                
                 smtpClient.SendMailAsync(mailMessage);
             }
             catch (Exception ex)

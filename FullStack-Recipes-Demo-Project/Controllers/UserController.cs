@@ -105,12 +105,13 @@ namespace FullStack_Recipes_Demo_Project.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> ForgetPassword([Required] string email)
         {
+            Console.Write("hereeeeeeeeeeee");
             var user = await _userManager.FindByEmailAsync(email);
             if (user != null)
             {
                 var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-                // var link = this.Url.Action("ResetPassword", "Authentication", new { token, email = user.Email }, Request.Scheme);
-                var message = new Message(email, "Forgot Password link", "reem");
+               //  var link = this.Url.Action("ResetPassword", "Authentication", new { token, email = user.Email }, Request.Scheme);
+                var message = new Message(email, "Forgot Password link",token);
                 Console.WriteLine(message.Content);
                 _email.SendEmail(message);
                 return Ok("Success sent!");

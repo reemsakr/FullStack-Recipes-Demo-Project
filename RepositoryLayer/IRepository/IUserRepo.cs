@@ -23,6 +23,6 @@ namespace RepositoryLayer.IRepository
         Task<String> Remove(string id);
         //Authentication
         Task<string> Login(LoginReq userObj);
-        //Task<string> ForgetPassword(string email);
+       // Task<string> ForgetPassword(string email);
     }
 }
